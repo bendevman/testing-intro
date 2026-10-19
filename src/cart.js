@@ -6,10 +6,16 @@ function addToCart(cart, product, quantity) {
   if (quantity <= 0) {
     throw new RangeError('Количество не может быть нулевым');
   }
-  if (quantity > product.stock) {
+  const cartItem = cart.find((item) => item.id === product.id);
+  const currentQuantity = cartItem ? cartItem.quantity : 0;
+  const newQuantity = currentQuantity + quantity;
+  if (newQuantity > product.stock) {
     throw new RangeError('Количество не может быть больше чем есть на складе');
   }
-  return [...cart, { ...product, quantity: quantity }];
+  if (cartItem) {
+    return cart.map((item) => (item.id === product.id ? { ...item, quantity: newQuantity } : item));
+  }
+  return [...cart, { ...product, quantity: newQuantity }];
 }
 function changeQuantity(cart, id, quantity) {
   if (quantity <= 0) {
