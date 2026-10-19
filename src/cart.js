@@ -16,7 +16,6 @@ function changeQuantity(cart, id, quantity) {
     throw new RangeError('Количество не может быть нулевым');
   }
   const cartItem = cart.find(item => item.id === id);
-  console.log(cartItem)
   if (!cartItem) {
     return cart;
   }
@@ -28,7 +27,9 @@ function changeQuantity(cart, id, quantity) {
 function removeFromCart(cart, id) {
   return cart.filter(item => item.id !== id);
 }
-function calculateCartSubtotal() { return notImplemented(); }
+function calculateCartSubtotal(cart) {
+  return cart.reduce((subtotal, item) => subtotal + item.price * item.quantity, 0);
+}
 function calculateOrderTotal() { return notImplemented(); }
 
 const cartApi = { addToCart, changeQuantity, removeFromCart, calculateCartSubtotal, calculateOrderTotal };
